@@ -68,7 +68,7 @@ public class ItemController {
     @DELETE
     @Path ("/{id}")
     @Transactional
-    public Response delete(@PathParam("id") Integer id, JsonObject request){
+    public Response delete(@PathParam("id") Integer id){
         Item.deleteById(id);
         return Response.ok().entity(new HashMap<>()).build();
     }
