@@ -32,6 +32,20 @@ public class ItemController {
         return Response.ok().entity(Item.listAll()).build();
     }
 
+    //get by id
+    @GET
+    @Path("/{id}")
+    public Response getById(@PathParam("id") Integer id){
+        Item item = Item.findById(id);
+        if(item == null){
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(Map.of("message", "ITEM_NOT_FOUND"))
+                    .build();
+        }
+
+        return Response.ok().entity(item).build();
+    }
+
     //update
     @PUT
     @Path("/{id}")
