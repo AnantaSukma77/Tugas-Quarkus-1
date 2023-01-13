@@ -1,8 +1,13 @@
 package id.kawahedukasi.controller;
 
 import id.kawahedukasi.model.Item;
+import id.kawahedukasi.model.dto.UploadItemRequest;
 import id.kawahedukasi.service.ItemService;
+import id.kawahedukasi.service.ReportService;
+//import id.kawahedukasi.service.UploadService;
 import io.vertx.core.json.JsonObject;
+import net.sf.jasperreports.engine.JRException;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -17,6 +22,8 @@ import java.util.*;
 public class ItemController {
     @Inject
     ItemService itemService;
+    ReportService reportService;
+//    UploadService uploadService;
 
     @POST
     public Response created(JsonObject request){
@@ -28,6 +35,20 @@ public class ItemController {
     public Response getAll(){
         return itemService.getAll();
     }
+
+    @GET
+    @Path("/report")
+    @Produces("application/pdf")
+    public Response create() throws JRException {
+        return reportService.exportJasper();
+    }
+
+//    @Path("/upload")
+//    @Consumes(MediaType.MULTIPART_FORM_DATA)
+//    @POST
+//    public Response upload(@MultipartForm UploadItemRequest request){
+//        return uploadService.upload(request);
+//    }
 
     //get by id
     @GET
@@ -46,7 +67,6 @@ public class ItemController {
     //delete by id
     @DELETE
     @Path ("/{id}")
-    @Transactional
     public Response delete(@PathParam("id") Integer id){
         return  itemService.delete(id);
     }
