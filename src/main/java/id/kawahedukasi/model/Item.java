@@ -4,7 +4,6 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Table(name = "item")
@@ -25,10 +24,10 @@ public class Item extends PanacheEntityBase{
     private String name;
 
     @Column(name = "count", nullable = false, length = 32)
-    private Double count;
+    private Long count;
 
     @Column(name = "price", nullable = false, length = 32)
-    private Long price;
+    private Double price;
 
     @Column(name = "type", nullable = false, length = 20)
     private String type;
@@ -63,19 +62,19 @@ public class Item extends PanacheEntityBase{
         this.name = name;
     }
 
-    public Double getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(Double count) {
+    public void setCount(Long count) {
         this.count = count;
     }
 
-    public Long getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

@@ -2,6 +2,8 @@ package id.kawahedukasi.service;
 
 import id.kawahedukasi.model.Item;
 import io.vertx.core.json.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.transaction.Transactional;
@@ -12,13 +14,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
+
+
 @ApplicationScoped
 public class ItemService {
+    Logger logger = LoggerFactory.getLogger(ItemService.class);
     @Transactional //karena save data item
     public Response created(JsonObject request){
         String name = request.getString("name");
-        Double count =request.getDouble("count");
-        Long price = request.getLong("price");
+        Long count =request.getLong("count");
+        Double price = request.getDouble("price");
         String type= request.getString("type");
         String description =request.getString("description");
 
@@ -73,8 +79,8 @@ public class ItemService {
     @Transactional
     public Response update(@PathParam("id") Integer id, JsonObject request){
         String name = request.getString("name");
-        Double count =request.getDouble("count");
-        Long price = request.getLong("price");
+        Long count =request.getLong("count");
+        Double price = request.getDouble("price");
         String type= request.getString("type");
         String description =request.getString("description");
 
@@ -113,5 +119,19 @@ public class ItemService {
         }
         item.delete();
         return Response.ok().entity(Map.of("id", item.getId())).build();
+    }
+
+    @Transactional //karena kita mau save data item
+    public Item persistItem(String name, Double price, String type, Long count, String description){
+        Item item = new Item();
+        item.setName(name);
+        item.setPrice(price);
+        item.setType(type);
+        item.setCount(count);
+        item.setDescription(description);
+
+        item.persist();
+        logger.info("Created New Item -> {}", item.getId());
+        return item;
     }
 }
